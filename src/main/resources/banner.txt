@@ -1,0 +1,32 @@
+
+
+         CCCCCCCCCCCCC                                      SSSSSSSSSSSSSSS
+      CCC::::::::::::C                                    SS:::::::::::::::S
+    CC:::::::::::::::C                                   S:::::SSSSSS::::::S
+   C:::::CCCCCCCC::::C                                   S:::::S     SSSSSSS
+  C:::::C       CCCCCC  aaaaaaaaaaaaa    aaaaaaaaaaaaa   S:::::S
+ C:::::C                a::::::::::::a   a::::::::::::a  S:::::S
+ C:::::C                aaaaaaaaa:::::a  aaaaaaaaa:::::a  S::::SSSS
+ C:::::C                         a::::a           a::::a   SS::::::SSSSS
+ C:::::C                  aaaaaaa:::::a    aaaaaaa:::::a     SSS::::::::SS
+ C:::::C                aa::::::::::::a  aa::::::::::::a        SSSSSS::::S
+ C:::::C               a::::aaaa::::::a a::::aaaa::::::a             S:::::S
+  C:::::C       CCCCCCa::::a    a:::::aa::::a    a:::::a             S:::::S
+   C:::::CCCCCCCC::::Ca::::a    a:::::aa::::a    a:::::a SSSSSSS     S:::::S
+    CC:::::::::::::::Ca:::::aaaa::::::aa:::::aaaa::::::a S::::::SSSSSS:::::S
+      CCC::::::::::::C a::::::::::aa:::aa::::::::::aa:::aS:::::::::::::::SS
+         CCCCCCCCCCCCC  aaaaaaaaaa  aaaa aaaaaaaaaa  aaaa SSSSSSSSSSSSSSS
+
+          ────────────────────────────────────────────────────────
+                            aka   " coupoNinja "
+          ────────────────────────────────────────────────────────
+
+
+                        Powered by Spring Boot ${spring-boot.version}
+                      ────────────────────────────────
+                            all right reserved ©
+                            F a d i   @  2 0 2 2
+                      ────────────────────────────────
+                      ────────────────────────────────
+
+
