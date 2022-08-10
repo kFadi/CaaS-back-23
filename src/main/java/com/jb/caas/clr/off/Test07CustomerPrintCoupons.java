@@ -10,7 +10,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(7)
+@Order(17)
 @RequiredArgsConstructor
 public class Test07CustomerPrintCoupons implements CommandLineRunner {
 

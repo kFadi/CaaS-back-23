@@ -27,7 +27,7 @@ import static com.jb.caas.utils.DateUtils.beautifyDate;
 import static com.jb.caas.utils.PrintUtils.*;
 
 @Component
-@Order(2)
+@Order(12)
 @RequiredArgsConstructor
 public class Test02CompanyCRU implements CommandLineRunner {
 

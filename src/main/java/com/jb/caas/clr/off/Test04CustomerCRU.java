@@ -20,7 +20,7 @@ import java.util.List;
 import static com.jb.caas.utils.PrintUtils.*;
 
 @Component
-@Order(4)
+@Order(14)
 @RequiredArgsConstructor
 
 public class Test04CustomerCRU implements CommandLineRunner {

@@ -15,7 +15,7 @@ import static com.jb.caas.utils.PrintUtils.printTableCoupons;
 import static com.jb.caas.utils.PrintUtils.printTestPhaseTitle;
 
 @Component
-@Order(12)
+@Order(22)
 @RequiredArgsConstructor
 public class Test12RemoveExpiredCoupons implements CommandLineRunner {
 

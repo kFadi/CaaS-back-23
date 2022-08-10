@@ -16,7 +16,7 @@ import java.util.List;
 import static com.jb.caas.utils.PrintUtils.*;
 
 @Component
-@Order(10)
+@Order(20)
 @RequiredArgsConstructor
 public class Test10AdminDelCustomer implements CommandLineRunner {
 

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import static com.jb.caas.utils.PrintUtils.*;
 
 @Component
-@Order(8)
+@Order(18)
 @RequiredArgsConstructor
 public class Test08AdminDelCompany implements CommandLineRunner {
 

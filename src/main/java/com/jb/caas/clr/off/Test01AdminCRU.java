@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import static com.jb.caas.utils.PrintUtils.*;
 
 @Component
-@Order(1)
+@Order(11)
 @RequiredArgsConstructor
 public class Test01AdminCRU implements CommandLineRunner {
 
