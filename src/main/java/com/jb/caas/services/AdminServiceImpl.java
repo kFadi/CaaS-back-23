@@ -46,7 +46,7 @@ public class AdminServiceImpl extends ClientService implements AdminService {
 
 
     @Override
-    public void addCompany(Company company) throws CouponSecurityException {
+    public Company addCompany(Company company) throws CouponSecurityException {
         // no duplicates name OR email
         // agreed: ignore value of company's id / coupons
         // added: name And email can have duplicates across 3 Client Types
@@ -62,10 +62,12 @@ public class AdminServiceImpl extends ClientService implements AdminService {
         }
 
         companyRepository.save(company);
+
+        return company;
     }
 
     @Override
-    public void updateCompany(int companyId, Company company) throws CouponSystemException, CouponSecurityException {
+    public Company updateCompany(int companyId, Company company) throws CouponSystemException, CouponSecurityException {
         // no update name
         // no update (ignore) company's id / coupons
         // no duplicates email (concluded from addCompany(..))
@@ -87,6 +89,8 @@ public class AdminServiceImpl extends ClientService implements AdminService {
         }
 
         companyRepository.saveAndFlush(company);
+
+        return company;
     }
 
     @Override
@@ -118,7 +122,7 @@ public class AdminServiceImpl extends ClientService implements AdminService {
 
 
     @Override
-    public void addCustomer(Customer customer) throws CouponSecurityException {
+    public Customer addCustomer(Customer customer) throws CouponSecurityException {
         // no duplicates email
         // agreed: ignore value of customer's id / coupons
         // added: email can have duplicates across 3 Client Types
@@ -130,10 +134,12 @@ public class AdminServiceImpl extends ClientService implements AdminService {
             throw new CouponSecurityException(SecMsg.CUSTOMER_ALREADY_EXISTS_EMAIL);
         }
         customerRepository.save(customer);
+
+        return customer;
     }
 
     @Override
-    public void updateCustomer(int customerId, Customer customer) throws CouponSystemException, CouponSecurityException {
+    public Customer updateCustomer(int customerId, Customer customer) throws CouponSystemException, CouponSecurityException {
         // no update (ignore) value of customer's id / coupons
         // no duplicates email (concluded from addCustomer(..))
         // added: email can have duplicates across 3 Client Types
@@ -148,6 +154,8 @@ public class AdminServiceImpl extends ClientService implements AdminService {
             throw new CouponSecurityException(SecMsg.CUSTOMER_ALREADY_EXISTS_EMAIL);
         }
         customerRepository.saveAndFlush(customer);
+
+        return customer;
     }
 
     @Override

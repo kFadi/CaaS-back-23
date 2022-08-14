@@ -34,14 +34,14 @@ public class CustomerController {
 
     @PostMapping("/coupons")
     @ResponseStatus(HttpStatus.CREATED)
-    public void purchaseCoupon(@RequestHeader("Authorization") UUID token, @Valid @RequestBody Coupon coupon) throws CouponSecurityException, CouponSystemException {
+    public Coupon purchaseCoupon(@RequestHeader("Authorization") UUID token, @Valid @RequestBody Coupon coupon) throws CouponSecurityException, CouponSystemException {
 
         int customerId = tokenManager.getIdByToken(token);
         if (!(tokenManager.getTypeByToken(token).equals(ClientType.CUSTOMER))) {
             throw new CouponSecurityException(SecMsg.UNAUTHORIZED_OPERATION);
         }
 
-        customerService.purchaseCoupon(customerId, coupon);
+        return customerService.purchaseCoupon(customerId, coupon);
     }
 
     @GetMapping("/coupons")

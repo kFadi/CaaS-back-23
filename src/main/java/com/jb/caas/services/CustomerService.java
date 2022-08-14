@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface CustomerService {
 
-    void purchaseCoupon(int customerId, Coupon coupon) throws CouponSystemException, CouponSecurityException;
+    Coupon purchaseCoupon(int customerId, Coupon coupon) throws CouponSystemException, CouponSecurityException;
 
     List<Coupon> getCustomerCoupons(int customerId);
 

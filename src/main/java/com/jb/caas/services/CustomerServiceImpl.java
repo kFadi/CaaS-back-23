@@ -41,7 +41,7 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
     //\/\/\/\/\/\/\/\/\/\
 
     @Override
-    public void purchaseCoupon(int customerId, Coupon coupon) throws CouponSystemException, CouponSecurityException {
+    public Coupon purchaseCoupon(int customerId, Coupon coupon) throws CouponSystemException, CouponSecurityException {
         // not purchased b4 + quantity>0 + date valid
         // quantity--
         // assumed: only coupon's id is used - rest fields assumed to be legit and suits db coupons'!
@@ -67,6 +67,8 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
         customerRepository.saveAndFlush(dbCst);
         dbCpn.setAmount(dbCpn.getAmount() - 1);
         couponRepository.saveAndFlush(dbCpn);
+
+        return dbCpn;
     }
 
     @Override

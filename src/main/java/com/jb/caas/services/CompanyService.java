@@ -14,9 +14,9 @@ import java.util.List;
 
 public interface CompanyService {
 
-    void addCoupon(int companyId, Coupon coupon) throws CouponSystemException, CouponSecurityException;
+    Coupon addCoupon(int companyId, Coupon coupon) throws CouponSystemException, CouponSecurityException;
 
-    void updateCoupon(int companyId, int couponId, Coupon coupon) throws CouponSystemException, CouponSecurityException;
+    Coupon updateCoupon(int companyId, int couponId, Coupon coupon) throws CouponSystemException, CouponSecurityException;
 
     void deleteCoupon(int companyId, int couponId) throws CouponSystemException;
 

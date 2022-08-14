@@ -41,7 +41,7 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
 
 
     @Override
-    public void addCoupon(int companyId, Coupon coupon) throws CouponSystemException, CouponSecurityException {
+    public Coupon addCoupon(int companyId, Coupon coupon) throws CouponSystemException, CouponSecurityException {
         // no duplicates title (for coupons of the same company)
         // agreed: ignore value of coupon's id / company
         // added: startDate <= endDate >= now  (( "=,=" one day coupon today ))
@@ -66,10 +66,12 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         }
 
         couponRepository.save(coupon);
+
+        return coupon;
     }
 
     @Override
-    public void updateCoupon(int companyId, int couponId, Coupon coupon) throws CouponSystemException, CouponSecurityException {
+    public Coupon updateCoupon(int companyId, int couponId, Coupon coupon) throws CouponSystemException, CouponSecurityException {
         // no update (ignore) coupon's id / company
         // no duplicates title (concluded from addCoupon(..))
         // added: startDate <= endDate >= now  (( "=,=" one day coupon today ))
@@ -104,6 +106,8 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         }
 
         couponRepository.saveAndFlush(coupon);
+
+        return coupon;
     }
 
     @Override

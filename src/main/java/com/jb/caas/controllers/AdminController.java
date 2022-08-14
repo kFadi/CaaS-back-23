@@ -34,24 +34,24 @@ public class AdminController {
 
     @PostMapping("/companies")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCompany(@RequestHeader("Authorization") UUID token, @Valid @RequestBody Company company) throws CouponSecurityException {
+    public Company addCompany(@RequestHeader("Authorization") UUID token, @Valid @RequestBody Company company) throws CouponSecurityException {
 
         if (!(tokenManager.getTypeByToken(token).equals(ClientType.ADMIN))) {
             throw new CouponSecurityException(SecMsg.UNAUTHORIZED_OPERATION);
         }
 
-        adminService.addCompany(company);
+        return adminService.addCompany(company);
     }
 
     @PutMapping("/companies/{id}")
     //@ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCompany(@RequestHeader("Authorization") UUID token, @PathVariable int id, @Valid @RequestBody Company company) throws CouponSecurityException, CouponSystemException {
+    public Company updateCompany(@RequestHeader("Authorization") UUID token, @PathVariable int id, @Valid @RequestBody Company company) throws CouponSecurityException, CouponSystemException {
 
         if (!(tokenManager.getTypeByToken(token).equals(ClientType.ADMIN))) {
             throw new CouponSecurityException(SecMsg.UNAUTHORIZED_OPERATION);
         }
 
-        adminService.updateCompany(id, company);
+        return adminService.updateCompany(id, company);
     }
 
     @DeleteMapping("/companies/{id}")
@@ -89,24 +89,24 @@ public class AdminController {
 
     @PostMapping("/customers")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCustomer(@RequestHeader("Authorization") UUID token, @Valid @RequestBody Customer customer) throws CouponSecurityException {
+    public Customer addCustomer(@RequestHeader("Authorization") UUID token, @Valid @RequestBody Customer customer) throws CouponSecurityException {
 
         if (!(tokenManager.getTypeByToken(token).equals(ClientType.ADMIN))) {
             throw new CouponSecurityException(SecMsg.UNAUTHORIZED_OPERATION);
         }
 
-        adminService.addCustomer(customer);
+        return adminService.addCustomer(customer);
     }
 
     @PutMapping("/customers/{id}")
     //@ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCustomer(@RequestHeader("Authorization") UUID token, @PathVariable int id, @Valid @RequestBody Customer customer) throws CouponSecurityException, CouponSystemException {
+    public Customer updateCustomer(@RequestHeader("Authorization") UUID token, @PathVariable int id, @Valid @RequestBody Customer customer) throws CouponSecurityException, CouponSystemException {
 
         if (!(tokenManager.getTypeByToken(token).equals(ClientType.ADMIN))) {
             throw new CouponSecurityException(SecMsg.UNAUTHORIZED_OPERATION);
         }
 
-        adminService.updateCustomer(id, customer);
+        return adminService.updateCustomer(id, customer);
     }
 
     @DeleteMapping("/customers/{id}")

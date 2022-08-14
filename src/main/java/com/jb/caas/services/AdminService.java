@@ -16,9 +16,9 @@ public interface AdminService {
 
     //---------------------------------------------------------------------------------
 
-    void addCompany(Company company) throws CouponSecurityException;
+    Company addCompany(Company company) throws CouponSecurityException;
 
-    void updateCompany(int companyId, Company company) throws CouponSystemException, CouponSecurityException;
+    Company updateCompany(int companyId, Company company) throws CouponSystemException, CouponSecurityException;
 
     void deleteCompany(int companyId) throws CouponSystemException;
 
@@ -28,9 +28,9 @@ public interface AdminService {
 
     //---------------------------------------------------------------------------------
 
-    void addCustomer(Customer customer) throws CouponSecurityException;
+    Customer addCustomer(Customer customer) throws CouponSecurityException;
 
-    void updateCustomer(int customerId, Customer customer) throws CouponSystemException, CouponSecurityException;
+    Customer updateCustomer(int customerId, Customer customer) throws CouponSystemException, CouponSecurityException;
 
     void deleteCustomer(int customerId) throws CouponSystemException;
 
