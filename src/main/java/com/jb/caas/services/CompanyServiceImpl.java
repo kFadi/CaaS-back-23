@@ -7,9 +7,10 @@ package com.jb.caas.services;
 import com.jb.caas.beans.Category;
 import com.jb.caas.beans.Company;
 import com.jb.caas.beans.Coupon;
+import com.jb.caas.exceptions.CouponSecurityException;
 import com.jb.caas.exceptions.CouponSystemException;
 import com.jb.caas.exceptions.ErrMsg;
-import com.jb.caas.utils.PrintUtils;
+import com.jb.caas.exceptions.SecMsg;
 import lombok.Getter;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -24,19 +25,15 @@ import java.util.List;
 @Getter
 public class CompanyServiceImpl extends ClientService implements CompanyService {
 
-    private int companyId; // logged-in company
-
-    // AGREED - all DB values comparisons are Case_Insensitive
+    // AGREED - all string values comparisons are Case_Insensitive
 
     //\/\/\/\/\/\/\/\/\/\
     //\/\/\/\/\/\/\/\/\/\
 
     @Override
     public boolean login(String email, String password) {
-        if (companyRepository.existsByEmailAndPassword(email, password)) {
-            this.companyId = companyRepository.getIdFromEmailAndPass(email, password);
-        }
-        return companyId != 0;
+
+        return companyRepository.existsByEmailAndPassword(email, password);
     }
 
     //\/\/\/\/\/\/\/\/\/\
@@ -44,17 +41,19 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
 
 
     @Override
-    public void addCoupon(Coupon coupon) throws CouponSystemException {
+    public void addCoupon(int companyId, Coupon coupon) throws CouponSystemException, CouponSecurityException {
         // no duplicates title (for coupons of the same company)
         // agreed: ignore value of coupon's id / company
         // added: startDate <= endDate >= now  (( "=,=" one day coupon today ))
         // amount>=0  (( "=" for adding it and updating it later, sort of adding it "locked" ))
 
         coupon.setId(0);
-        coupon.setCompany(companyRepository.getById(companyId));
+
+        // just in case
+        coupon.setCompany(companyRepository.findById(companyId).orElseThrow(() -> new CouponSystemException(ErrMsg.COMPANY_ID_NOT_FOUND)));
 
         if (couponRepository.existsByCompanyIdAndTitle(companyId, coupon.getTitle())) {
-            throw new CouponSystemException(ErrMsg.COUPON_ALREADY_EXISTS_TITLE);
+            throw new CouponSecurityException(SecMsg.COUPON_ALREADY_EXISTS_TITLE);
         }
         if (coupon.getEndDate().before(coupon.getStartDate())) {
             throw new CouponSystemException(ErrMsg.COUPON_INVALID_DATE);
@@ -67,11 +66,10 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         }
 
         couponRepository.save(coupon);
-        System.out.println("\n . . .  Coupon was added" + PrintUtils.SMILE + "\n");
     }
 
     @Override
-    public void updateCoupon(int couponId, Coupon coupon) throws CouponSystemException {
+    public void updateCoupon(int companyId, int couponId, Coupon coupon) throws CouponSystemException, CouponSecurityException {
         // no update (ignore) coupon's id / company
         // no duplicates title (concluded from addCoupon(..))
         // added: startDate <= endDate >= now  (( "=,=" one day coupon today ))
@@ -79,17 +77,21 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         //                   for continuing updating it later, sort of moving it to "locked" state ))
 
         coupon.setId(couponId);
-        coupon.setCompany(companyRepository.getById(companyId));
+
+        // just in case
+        coupon.setCompany(companyRepository.findById(companyId).orElseThrow(() -> new CouponSystemException(ErrMsg.COMPANY_ID_NOT_FOUND)));
 
         if (!couponRepository.existsByIdAndCompanyId(couponId, companyId)) {
             throw new CouponSystemException(ErrMsg.COUPON_ID_NOT_FOUND_OF_COMPANY);
         }
 
-        Coupon dbCpn = couponRepository.getById(couponId);
+        // just in case
+        Coupon dbCpn = couponRepository.findById(couponId).orElseThrow(() -> new CouponSystemException(ErrMsg.COUPON_ID_NOT_FOUND));
+
         String title = coupon.getTitle();
 
-        if (!dbCpn.getTitle().equals(title) && couponRepository.existsByCompanyIdAndTitle(companyId, title)) {
-            throw new CouponSystemException(ErrMsg.COUPON_ALREADY_EXISTS_TITLE);
+        if (!dbCpn.getTitle().equalsIgnoreCase(title) && couponRepository.existsByCompanyIdAndTitle(companyId, title)) {
+            throw new CouponSecurityException(SecMsg.COUPON_ALREADY_EXISTS_TITLE);
         }
         if (coupon.getEndDate().before(coupon.getStartDate())) {
             throw new CouponSystemException(ErrMsg.COUPON_INVALID_DATE);
@@ -102,43 +104,43 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         }
 
         couponRepository.saveAndFlush(coupon);
-        System.out.println("\n . . .  Coupon was updated" + PrintUtils.SMILE + "\n");
     }
 
     @Override
-    public void deleteCoupon(int couponId) throws CouponSystemException {
+    public void deleteCoupon(int companyId, int couponId) throws CouponSystemException {
         //delete customers' purchase history
 
         if (!couponRepository.existsByIdAndCompanyId(couponId, companyId)) {
             throw new CouponSystemException(ErrMsg.COUPON_ID_NOT_FOUND_OF_COMPANY);
         }
+
         couponRepository.deleteById(couponId);
         couponRepository.updatePurchasesJoin();
-        System.out.println("\n . . .  Coupon was deleted (with all its purchases if existed!)" + PrintUtils.SMILE + "\n");
     }
 
     @Override
-    public List<Coupon> getCompanyCoupons() {
-        // logged-in company
+    public List<Coupon> getCompanyCoupons(int companyId) {
+
         return couponRepository.findByCompanyId(companyId);
     }
 
     @Override
-    public List<Coupon> getCompanyCoupons(Category category) {
-        // logged-in company
+    public List<Coupon> getCompanyCoupons(int companyId, Category category) {
+
         return couponRepository.findByCompanyIdAndCategory(companyId, category);
     }
 
     @Override
-    public List<Coupon> getCompanyCoupons(double maxPrice) {
-        // logged-in company
+    public List<Coupon> getCompanyCoupons(int companyId, double maxPrice) {
+
         return couponRepository.findByCompanyIdAndMaxPrice(companyId, maxPrice);
     }
 
     @Override
-    public Company getCompanyDetails() {
-        // logged-in company
-        return companyRepository.getById(companyId);
+    public Company getCompanyDetails(int companyId) throws CouponSystemException {
+
+        // just in case
+        return companyRepository.findById(companyId).orElseThrow(() -> new CouponSystemException(ErrMsg.COMPANY_ID_NOT_FOUND));
     }
 
 }

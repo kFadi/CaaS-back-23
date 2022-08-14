@@ -4,6 +4,7 @@ package com.jb.caas.beans;
  * copyrights @ fadi
  */
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,11 +39,14 @@ public class Coupon {
     @Column(nullable = false, length = 45)
     private String description;
 
+    @JsonFormat(pattern = "dd/MM/yyy") //TODO??
     @NotNull(message = "Start Date cannot be null")
     @FutureOrPresent(message = "Start Date cannot be set to the past")
     @Column(nullable = false)
     private Date startDate;
 
+    @JsonFormat(pattern = "dd/MM/yyy") //TODO??
+    @NotNull(message = "End Date cannot be null")
     @FutureOrPresent(message = "End Date cannot be set to the past")
     @Column(nullable = false)
     private Date endDate;

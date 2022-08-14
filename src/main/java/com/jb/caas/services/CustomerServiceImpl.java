@@ -7,9 +7,10 @@ package com.jb.caas.services;
 import com.jb.caas.beans.Category;
 import com.jb.caas.beans.Coupon;
 import com.jb.caas.beans.Customer;
+import com.jb.caas.exceptions.CouponSecurityException;
 import com.jb.caas.exceptions.CouponSystemException;
 import com.jb.caas.exceptions.ErrMsg;
-import com.jb.caas.utils.PrintUtils;
+import com.jb.caas.exceptions.SecMsg;
 import lombok.Getter;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -25,27 +26,22 @@ import java.util.Set;
 @Getter
 public class CustomerServiceImpl extends ClientService implements CustomerService {
 
-    private int customerId; // logged-in customer
-
-    // AGREED - all DB values comparisons are Case_Insensitive
+    // AGREED - all string values comparisons are Case_Insensitive
 
     //\/\/\/\/\/\/\/\/\/\
     //\/\/\/\/\/\/\/\/\/\
 
     @Override
     public boolean login(String email, String password) {
-        if (customerRepository.existsByEmailAndPassword(email, password)) {
-            this.customerId = customerRepository.getIdFromEmailAndPass(email, password);
-        }
-        return customerId != 0;
+
+        return customerRepository.existsByEmailAndPassword(email, password);
     }
 
     //\/\/\/\/\/\/\/\/\/\
     //\/\/\/\/\/\/\/\/\/\
 
-
     @Override
-    public void purchaseCoupon(Coupon coupon) throws CouponSystemException {
+    public void purchaseCoupon(int customerId, Coupon coupon) throws CouponSystemException, CouponSecurityException {
         // not purchased b4 + quantity>0 + date valid
         // quantity--
         // assumed: only coupon's id is used - rest fields assumed to be legit and suits db coupons'!
@@ -54,7 +50,7 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
         Coupon dbCpn = couponRepository.findById(couponId).orElseThrow(() -> new CouponSystemException(ErrMsg.COUPON_ID_NOT_FOUND));
 
         if (couponRepository.isCouponPurchasedByCustomer(customerId, couponId)) {
-            throw new CouponSystemException(ErrMsg.COUPON_PURCHASED_BEFORE);
+            throw new CouponSecurityException(SecMsg.CUSTOMER_COUPON_PURCHASED_BEFORE);
         }
         if (dbCpn.getAmount() <= 0) {
             throw new CouponSystemException(ErrMsg.COUPON_NOT_LEFT);
@@ -63,37 +59,39 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
             throw new CouponSystemException(ErrMsg.COUPON_EXPIRED);
         }
 
-        Customer dbCst = customerRepository.getById(customerId);
+        // just in case
+        Customer dbCst = customerRepository.findById(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.CUSTOMER_ID_NOT_FOUND));
+
         Set<Coupon> coupons = dbCst.getCoupons();
         coupons.add(dbCpn);
         customerRepository.saveAndFlush(dbCst);
         dbCpn.setAmount(dbCpn.getAmount() - 1);
         couponRepository.saveAndFlush(dbCpn);
-        System.out.println("\n . . .  Coupon was purchased" + PrintUtils.SMILE + "\n");
     }
 
     @Override
-    public List<Coupon> getCustomerCoupons() {
-        // logged-in customer
+    public List<Coupon> getCustomerCoupons(int customerId) {
+
         return couponRepository.findByCustomerId(customerId);
     }
 
     @Override
-    public List<Coupon> getCustomerCoupons(Category category) {
-        // logged-in customer
+    public List<Coupon> getCustomerCoupons(int customerId, Category category) {
+
         return couponRepository.findByCustomerIdAndCategory(customerId, category.name());
     }
 
     @Override
-    public List<Coupon> getCustomerCoupons(double maxPrice) {
-        // logged-in customer
+    public List<Coupon> getCustomerCoupons(int customerId, double maxPrice) {
+
         return couponRepository.findByCustomerIdAndMaxPrice(customerId, maxPrice);
     }
 
     @Override
-    public Customer getCustomerDetails() {
-        // logged-in customer
-        return customerRepository.getById(customerId);
+    public Customer getCustomerDetails(int customerId) throws CouponSystemException {
+
+        // just in case
+        return customerRepository.findById(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.CUSTOMER_ID_NOT_FOUND));
     }
 
 }

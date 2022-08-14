@@ -22,43 +22,39 @@ public class FactoryUtils {
     private static int idxCust = 0;
     private static int idxCpn = 0;
 
-    public static Company initCompany(boolean indexed) {
-        if (indexed) {
-            idxComp++;
-        }
+    public static Company initCompany() {
+
+        idxComp++;
         return Company.builder()
-                .name(indexed ? "CompanyName_" + idxComp : "someName")
-                .email(indexed ? "CompanyEmail_" + idxComp + "_@site.com" : "someEmail")
-                .password(indexed ? "CompanyPass_" + idxComp : "somePass")
+                .name("comp_" + idxComp)
+                .email("comp_" + idxComp + "@c.c")
+                .password("1111")
                 .build();
     }
 
-    public static Customer initCustomer(boolean indexed) {
-        if (indexed) {
-            idxCust++;
-        }
+    public static Customer initCustomer() {
+
+        idxCust++;
         return Customer.builder()
-                .firstName(indexed ? "CustomerFirstName_" + idxCust : "someFirstName")
-                .lastName(indexed ? "CustomerLastName_" + idxCust : "someLastName")
-                .email(indexed ? "CustomerEmail_" + idxCust + "_@site.com" : "someEmail")
-                .password(indexed ? "CustomerPass_" + idxCust : "somePass")
+                .firstName("first_" + idxCust)
+                .lastName("last_" + idxCust)
+                .email("cust_" + idxCust + "_@c.c")
+                .password("1111")
                 .build();
     }
 
-    public static Coupon initCoupon(boolean indexed) {
-        if (indexed) {
-            idxCpn++;
-        }
-        Date now = Date.valueOf(LocalDate.now());
+    public static Coupon initCoupon() {
+
+        idxCpn++;
         return Coupon.builder()
                 .category(Category.values()[rnd(Category.values().length)])
-                .title(indexed ? "CouponTitle_" + idxCpn : "someTitle")
-                .description(indexed ? "CouponDescription_" + idxCpn : "someDescription")
-                .startDate(now)
-                .endDate(indexed ? Date.valueOf(LocalDate.now().plusDays(rnd(CPN_MAX_DAYS))) : now)
-                .amount(indexed ? CPN_AMOUNT : 1)
-                .price(indexed ? (rnd(CPN_MAX_BASE_PRICE) + rnd(10) / 10.0) : 1.1)
-                .image(indexed ? "CouponImage_" + idxCpn : "someImage")
+                .title("title_" + idxCpn)
+                .description("description_" + idxCpn)
+                .startDate(Date.valueOf(LocalDate.now().plusDays(1)))
+                .endDate(Date.valueOf(LocalDate.now().plusDays(1 + rnd(CPN_MAX_DAYS))))
+                .amount(CPN_AMOUNT)
+                .price(rnd(CPN_MAX_BASE_PRICE) + rnd(10) / 10.0)
+                .image("img_" + idxCpn)
                 .build();
     }
 

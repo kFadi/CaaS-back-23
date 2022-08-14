@@ -1,4 +1,4 @@
-package com.jb.caas.advice;
+package com.jb.caas.dto;
 
 /*
  * copyrights @ fadi
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrDetails {
+public class ErrDto {
 
     private final String key = "Caas";
     private String value;
