@@ -32,7 +32,7 @@ public class CustomerController {
 
     //---------------------------------------------------------------------------------
 
-    @PostMapping("/coupons")
+    @PostMapping("/coupons/purchased")
     @ResponseStatus(HttpStatus.CREATED)
     public Coupon purchaseCoupon(@RequestHeader("Authorization") UUID token, @Valid @RequestBody Coupon coupon) throws CouponSecurityException, CouponSystemException {
 
@@ -45,6 +45,16 @@ public class CustomerController {
     }
 
     @GetMapping("/coupons")
+    public List<Coupon> getBrowseCoupons(@RequestHeader("Authorization") UUID token) throws CouponSecurityException {
+
+        if (!(tokenManager.getTypeByToken(token).equals(ClientType.CUSTOMER))) {
+            throw new CouponSecurityException(SecMsg.UNAUTHORIZED_OPERATION);
+        }
+
+        return customerService.getBrowseCoupons();
+    }
+
+    @GetMapping("/coupons/purchased")
     public List<Coupon> getCustomerCoupons(@RequestHeader("Authorization") UUID token) throws CouponSecurityException {
 
         int customerId = tokenManager.getIdByToken(token);
@@ -55,7 +65,7 @@ public class CustomerController {
         return customerService.getCustomerCoupons(customerId);
     }
 
-    @GetMapping("/coupons/categories")
+    @GetMapping("/coupons/purchased/categories")
     public List<Coupon> getCustomerCoupons(@RequestHeader("Authorization") UUID token, @RequestParam Category category) throws CouponSecurityException {
 
         int customerId = tokenManager.getIdByToken(token);
@@ -66,7 +76,7 @@ public class CustomerController {
         return customerService.getCustomerCoupons(customerId, category);
     }
 
-    @GetMapping("/coupons/price")
+    @GetMapping("/coupons/purchased/price")
     public List<Coupon> getCustomerCoupons(@RequestHeader("Authorization") UUID token, @RequestParam double max) throws CouponSecurityException {
 
         int customerId = tokenManager.getIdByToken(token);
@@ -79,7 +89,7 @@ public class CustomerController {
 
     //---------------------------------------------------------------------------------
 
-    @GetMapping
+    @GetMapping("/me")
     public Customer getCustomerDetails(@RequestHeader("Authorization") UUID token) throws CouponSecurityException, CouponSystemException {
 
         int customerId = tokenManager.getIdByToken(token);

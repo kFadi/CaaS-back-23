@@ -4,6 +4,8 @@ package com.jb.caas.services;
  * copyrights @ fadi
  */
 
+import com.jb.caas.beans.Company;
+import com.jb.caas.beans.Customer;
 import com.jb.caas.dto.LoginResDto;
 import com.jb.caas.exceptions.CouponSecurityException;
 import com.jb.caas.exceptions.SecMsg;
@@ -31,28 +33,32 @@ public class WelcomeServiceImpl implements WelcomeService {
     @Override
     public LoginResDto login(ClientType clientType, String email, String password) throws CouponSecurityException {
 
-        int id;
+        int id = 0;
+        String name = "";
 
         switch (clientType) {
             case ADMIN:
                 if (!((AdminServiceImpl) adminService).login(email, password)) {
                     throw new CouponSecurityException(SecMsg.INVALID_CREDENTIALS);
                 }
-                id = 1;
                 break;
 
             case COMPANY:
                 if (!((CompanyServiceImpl) companyService).login(email, password)) {
                     throw new CouponSecurityException(SecMsg.INVALID_CREDENTIALS);
                 }
-                id = companyRepository.getIdOfEmail(email);
+                Company cmp = companyRepository.findByEmail(email);
+                id = cmp.getId();
+                name = cmp.getName();
                 break;
 
             case CUSTOMER:
                 if (!((CustomerServiceImpl) customerService).login(email, password)) {
                     throw new CouponSecurityException(SecMsg.INVALID_CREDENTIALS);
                 }
-                id = customerRepository.getIdOfEmail(email);
+                Customer cst = customerRepository.findByEmail(email);
+                id = cst.getId();
+                name = cst.getFirstName() + " " + cst.getLastName();
                 break;
 
             default:
@@ -65,6 +71,8 @@ public class WelcomeServiceImpl implements WelcomeService {
                 .token(token)
                 .type(clientType)
                 .email(email)
+                .id(id)
+                .name(name)
                 .build();
 
     }

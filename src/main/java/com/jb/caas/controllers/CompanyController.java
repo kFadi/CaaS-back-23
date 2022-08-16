@@ -106,7 +106,7 @@ public class CompanyController {
 
     //---------------------------------------------------------------------------------
 
-    @GetMapping
+    @GetMapping("/me")
     public Company getCompanyDetails(@RequestHeader("Authorization") UUID token) throws CouponSecurityException, CouponSystemException {
 
         int companyId = tokenManager.getIdByToken(token);

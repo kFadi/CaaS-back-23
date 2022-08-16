@@ -26,8 +26,8 @@ public class FactoryUtils {
 
         idxComp++;
         return Company.builder()
-                .name("comp_" + idxComp)
-                .email("comp_" + idxComp + "@c.c")
+                .name("comp" + idxComp)
+                .email("comp" + idxComp + "@c.c")
                 .password("1111")
                 .build();
     }
@@ -36,9 +36,9 @@ public class FactoryUtils {
 
         idxCust++;
         return Customer.builder()
-                .firstName("first_" + idxCust)
-                .lastName("last_" + idxCust)
-                .email("cust_" + idxCust + "_@c.c")
+                .firstName("first" + idxCust)
+                .lastName("last" + idxCust)
+                .email("cust" + idxCust + "@c.c")
                 .password("1111")
                 .build();
     }

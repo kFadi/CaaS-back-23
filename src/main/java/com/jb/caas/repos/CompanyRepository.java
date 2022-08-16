@@ -20,6 +20,8 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
     boolean existsByEmailAndPassword(String email, String password);
 
+    Company findByEmail(String email);
+
     @Query(value = "SELECT `id` FROM `caas`.`companies` WHERE email= :email", nativeQuery = true)
     int getIdOfEmail(String email);
 

@@ -16,6 +16,8 @@ public interface CustomerService {
 
     Coupon purchaseCoupon(int customerId, Coupon coupon) throws CouponSystemException, CouponSecurityException;
 
+    List<Coupon> getBrowseCoupons();
+
     List<Coupon> getCustomerCoupons(int customerId);
 
     List<Coupon> getCustomerCoupons(int customerId, Category category);
@@ -23,5 +25,6 @@ public interface CustomerService {
     List<Coupon> getCustomerCoupons(int customerId, double maxPrice);
 
     Customer getCustomerDetails(int customerId) throws CouponSystemException;
+
 
 }
