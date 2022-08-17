@@ -21,7 +21,6 @@ import javax.validation.constraints.Size;
 @Builder
 public class LoginReqDto {
 
-    //TODO custom validation?
     @NotNull(message = "Type cannot be null")
     private ClientType type;
 

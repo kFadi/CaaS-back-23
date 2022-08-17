@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class FactoryUtils {
 
     private static final int CPN_MAX_DAYS = 8;
-    private static final int CPN_AMOUNT = 3;
+    private static final int CPN_AMOUNT = 2;
     private static final int CPN_MAX_BASE_PRICE = 50;
 
     private static int idxComp = 0;

@@ -4,12 +4,14 @@ package com.jb.caas.beans;
  * copyrights @ fadi
  */
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @Entity
@@ -24,7 +26,6 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    //TODO custom validation?
     @NotNull(message = "Category cannot be null")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -40,29 +41,21 @@ public class Coupon {
     @Column(nullable = false, length = 45)
     private String description;
 
-    //@JsonDeserialize(using = LocalDateDeserializer.class)
-    //@JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "dd/MM/yyy") //TODO??
     @NotNull(message = "Start Date cannot be null")
     //@FutureOrPresent(message = "Start Date cannot be set to the past")
     @Column(nullable = false)
     private Date startDate;
 
-    //@JsonDeserialize(using = LocalDateDeserializer.class)
-    //@JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(pattern = "dd/MM/yyy") //TODO??
     @NotNull(message = "End Date cannot be null")
-    @FutureOrPresent(message = "End Date cannot be set to the past")
+    //@FutureOrPresent(message = "End Date cannot be set to the past")
     @Column(nullable = false)
     private Date endDate;
 
-    //TODO - still called null for int?
     @NotNull(message = "Amount cannot be null")
     @PositiveOrZero(message = "Amount cannot be negative")
     @Column(nullable = false)
     private int amount;
 
-    //TODO - still called null for double?
     @NotNull(message = "Price cannot be null")
     @PositiveOrZero(message = "Price cannot be negative")
     @Column(nullable = false)

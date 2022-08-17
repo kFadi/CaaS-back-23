@@ -23,7 +23,6 @@ public class WelcomeController {
 
     private final WelcomeService welcomeService;
 
-    //TODO no need for "/login" cz no other conflicting POST (register)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public LoginResDto login(@Valid @RequestBody LoginReqDto loginReqDto) throws CouponSecurityException {

@@ -6,7 +6,6 @@ package com.jb.caas.repos;
 
 import com.jb.caas.beans.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository // :)
@@ -19,8 +18,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     boolean existsByEmailAndPassword(String email, String password);
 
     Customer findByEmail(String email);
-
-    @Query(value = "SELECT `id` FROM `caas`.`customers` WHERE email= :email", nativeQuery = true)
-    int getIdOfEmail(String email);
 
 }
