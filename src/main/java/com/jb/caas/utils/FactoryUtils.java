@@ -49,7 +49,7 @@ public class FactoryUtils {
         return Coupon.builder()
                 .category(Category.values()[rnd(Category.values().length)])
                 .title("title_" + idxCpn)
-                .description("description_" + idxCpn)
+                .description("Lorem Ipsum is simply dummy text of the print")
                 .startDate(Date.valueOf(LocalDate.now().plusDays(1)))
                 .endDate(Date.valueOf(LocalDate.now().plusDays(1 + rnd(CPN_MAX_DAYS))))
                 .amount(CPN_AMOUNT)
