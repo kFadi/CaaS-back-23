@@ -14,9 +14,9 @@ import java.time.LocalDate;
 
 public class FactoryUtils {
 
-    private static final int CPN_MAX_DAYS = 8;
-    private static final int CPN_AMOUNT = 2;
-    private static final int CPN_MAX_BASE_PRICE = 50;
+    private static final int CPN_MAX_DAYS = 365;
+    private static final int CPN_AMOUNT = 3;
+    private static final int CPN_MAX_BASE_PRICE = 500;
 
     private static int idxComp = 0;
     private static int idxCust = 0;
@@ -50,7 +50,7 @@ public class FactoryUtils {
                 .category(Category.values()[rnd(Category.values().length)])
                 .title("title_" + idxCpn)
                 .description("Lorem Ipsum is simply dummy text of the print")
-                .startDate(Date.valueOf(LocalDate.now().plusDays(1)))
+                .startDate(Date.valueOf(LocalDate.now()))
                 .endDate(Date.valueOf(LocalDate.now().plusDays(1 + rnd(CPN_MAX_DAYS))))
                 .amount(CPN_AMOUNT)
                 .price(rnd(CPN_MAX_BASE_PRICE) + rnd(10) / 10.0)
